@@ -1,0 +1,217 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Infrastructure\\EMOPlay.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\EMOPlay.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\EMOPlay.Application.csproj",
+        "projectName": "EMOPlay.Application",
+        "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\EMOPlay.Application.csproj",
+        "packagesPath": "C:\\Users\\Kevin Costa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Kevin Costa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj": {
+                "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj",
+        "projectName": "EMOPlay.Domain",
+        "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj",
+        "packagesPath": "C:\\Users\\Kevin Costa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Kevin Costa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Infrastructure\\EMOPlay.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Infrastructure\\EMOPlay.Infrastructure.csproj",
+        "projectName": "EMOPlay.Infrastructure",
+        "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Infrastructure\\EMOPlay.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Kevin Costa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Kevin Costa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\EMOPlay.Application.csproj": {
+                "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Application\\EMOPlay.Application.csproj"
+              },
+              "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj": {
+                "projectPath": "C:\\Users\\Kevin Costa\\Desktop\\FACULDADE\\New_Tcc\\backend\\EMOPlay.Domain\\EMOPlay.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[10.0.5, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.25.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

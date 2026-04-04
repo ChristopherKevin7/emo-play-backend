@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMOPlay.Domain", "EMOPlay.Domain\EMOPlay.Domain.csproj", "{7ED24100-3188-4F73-9748-8EDCDB43C9B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMOPlay.Application", "EMOPlay.Application\EMOPlay.Application.csproj", "{2F6CE400-F6BB-4E2B-ABC3-792D427F0A8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMOPlay.Infrastructure", "EMOPlay.Infrastructure\EMOPlay.Infrastructure.csproj", "{B84C49DA-281F-42A1-8BBA-4F5889B0708C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMOPlay.API", "EMOPlay.API\EMOPlay.API.csproj", "{CA6D2671-FF69-4B40-86B4-B34870CCBC67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7ED24100-3188-4F73-9748-8EDCDB43C9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED24100-3188-4F73-9748-8EDCDB43C9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED24100-3188-4F73-9748-8EDCDB43C9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED24100-3188-4F73-9748-8EDCDB43C9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F6CE400-F6BB-4E2B-ABC3-792D427F0A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F6CE400-F6BB-4E2B-ABC3-792D427F0A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F6CE400-F6BB-4E2B-ABC3-792D427F0A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F6CE400-F6BB-4E2B-ABC3-792D427F0A8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B84C49DA-281F-42A1-8BBA-4F5889B0708C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84C49DA-281F-42A1-8BBA-4F5889B0708C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84C49DA-281F-42A1-8BBA-4F5889B0708C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84C49DA-281F-42A1-8BBA-4F5889B0708C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6D2671-FF69-4B40-86B4-B34870CCBC67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6D2671-FF69-4B40-86B4-B34870CCBC67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6D2671-FF69-4B40-86B4-B34870CCBC67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6D2671-FF69-4B40-86B4-B34870CCBC67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

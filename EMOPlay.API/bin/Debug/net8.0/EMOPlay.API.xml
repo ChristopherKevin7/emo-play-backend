@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EMOPlay.API</name>
+    </assembly>
+    <members>
+        <member name="M:EMOPlay.API.Controllers.AuthController.Login(EMOPlay.Application.DTOs.Auth.LoginRequest)">
+            <summary>
+            Autentica um usuário com email, senha e role, retornando um token JWT
+            </summary>
+            <remarks>
+            Realiza a autenticação do usuário validando as credenciais fornecidas (email, senha e role).
+            A validação de role garante que somente usuários com a role correta possam fazer login.
+            Se as credenciais forem válidas E a role corresponder, retorna um token JWT que deve ser 
+            usado nos headers das requisições subsequentes (Authorization: Bearer {token}).
+            O token tem validade de 24 horas por padrão.
+            
+            **Fluxo de Validação:**
+            1. Recebe email, senha e role ("child" ou "psychologist") do usuário
+            2. Busca o usuário no banco de dados pelo email E role especificada
+            3. Se não encontrar usuário com aquela role, retorna erro 401
+            4. Verifica se a senha (hash) corresponde
+            5. Se válido, gera um token JWT com informações do usuário
+            6. Retorna token, dados do usuário e data de expiração
+            
+            **Exemplos:**
+            - Login de criança com role="child" → sucesso (se credenciais válidas)
+            - Login de criança com role="psychologist" → erro 401
+            - Login de psicólogo com role="psychologist" → sucesso (se credenciais válidas)
+            - Login de psicólogo com role="child" → erro 401
+            </remarks>
+            <param name="request">Objeto contendo email, senha e role do usuário</param>
+            <returns>LoginResponse com token JWT e informações do usuário autenticado</returns>
+            <response code="200">Login realizado com sucesso</response>
+            <response code="401">Email, senha ou role inválidos</response>
+            <response code="400">Dados inválidos na requisição</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.ChallengesController.RecordResponse(EMOPlay.Application.DTOs.Challenge.RecordResponseRequest)">
+            <summary>
+            Registra a resposta de uma criança a um desafio de emoção
+            </summary>
+            <remarks>
+            Armazena e processa a resposta de uma criança a um desafio específico.
+            Calcula pontuação, valida acertos e mantém histórico para análise.
+            
+            **Fluxo:**
+            1. Recebe sessionId, challengeId, emoção alvo, resposta da criança
+            2. Valida se a resposta está correta (comparando com targetEmotion)
+            3. Calcula pontos baseado em acerto/erro
+            4. Armazena temporizador (tempo de resposta)
+            5. Mantém score de confiança da IA
+            6. Armazena imagem capturada para referência
+            
+            **Pontuação:**
+            - Resposta correta: +10 pontos (base)
+            - Resposta incorreta: 0 pontos
+            - Bônus: Pontos adicionais por tempo rápido/confiança alta
+            
+            **Dados salvos:**
+            - targetEmotion: O que a criança deveria mostrar
+            - childResponse: O que a criança respondeu
+            - isCorrect: Se acertou
+            - responseTime: Tempo em milissegundos
+            - confidence: Confiança da detecção de IA (0-1)
+            - imageUrl: Referência da imagem capturada
+            </remarks>
+            <param name="request">Dados do desafio: sessionId, challengeId, targetEmotion, childResponse, isCorrect, responseTime, confidence, imageUrl</param>
+            <returns>Confirmação com pontos ganhos e total acumulado</returns>
+            <response code="200">Resposta registrada com sucesso</response>
+            <response code="400">Dados inválidos ou sessionId/challengeId não encontrados</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.EmotionsController.AnalyzeEmotion(EMOPlay.Application.DTOs.Emotion.AnalyzeEmotionRequest)">
+            <summary>
+            Analisa a emoção detectada em uma imagem capturada
+            </summary>
+            <remarks>
+            Processa uma imagem capturada da webcam e utiliza o módulo de IA (Python)
+            para detectar a emoção facial e compará-la com a emoção alvo do desafio.
+            
+            **Fluxo de análise:**
+            1. Recebe a imagem em base64 e a emoção alvo esperada
+            2. Valida se a imagem foi fornecida
+            3. Envia para o módulo de IA (Flask/Python na porta 5000)
+            4. Módulo detecta a emoção na imagem com score de confiança
+            5. Compara emoção detectada com a emoção alvo
+            6. Retorna resultado com confiança e se está correto
+            
+            **Emoções supportadas:**
+            - happy (feliz)
+            - sad (triste)
+            - angry (raiva)
+            - surprised (surpreso)
+            - fearful (medo)
+            - disgusted (desgostado)
+            - neutral (neutro)
+            
+            **Retorna:**
+            - detectedEmotion: Emoção detectada pela IA
+            - confidence: Confiança da detecção (0-1)
+            - isCorrect: Se foi a emoção correta (booleano)
+            - analysisTimestamp: Momento da análise
+            </remarks>
+            <param name="request">Imagem em base64 e emoção alvo a verificar</param>
+            <returns>Resultado da análise de emoção</returns>
+            <response code="200">Análise realizada com sucesso</response>
+            <response code="400">Imagem ou emoção alvo não fornecidas</response>
+            <response code="500">Erro na análise de IA ou servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.GamesController.SaveGameResult(EMOPlay.Application.DTOs.Game.SaveGameResultRequest)">
+            <summary>
+            Salva os resultados de um jogo completo da criança
+            </summary>
+            <remarks>
+            Recebe e armazena os dados completos de uma sessão de jogo, incluindo
+            todas as respostas da criança, tempos de resposta, emoções detectadas
+            e estatísticas consolidadas.
+            
+            **Dados da requisição:**
+            - childId: ID da criança
+            - gameMode: "identify" ou "make-emotion"
+            - levelId: "easy", "medium" ou "hard"
+            - startTime/endTime: Timestamps da sessão
+            - totalDuration: Duração total em millisegundos
+            - results: Array com detalhe de cada desafio (challengeNumber, targetEmotion, detectedEmotion, isCorrect, responseTime, timestamp)
+            - statistics: Resumo com totalChallenges, correctAnswers, accuracyRate
+            
+            **Fluxo:**
+            1. Recebe os dados consolidados do jogo
+            2. Cria um registro de sessão de jogo
+            3. Salva todos os desafios individuais
+            4. Armazena as estatísticas
+            5. Retorna confirmação e ID da sessão criada
+            
+            **Estes dados são usados para:**
+            - Gerar relatórios do psicólogo
+            - Análise de progresso da criança
+            - Feedback e intervenção educacional
+            - Rastreamento histórico de performance
+            </remarks>
+            <param name="request">Dados consolidados do jogo completo</param>
+            <returns>Confirmação de salvamento e ID da sessão</returns>
+            <response code="200">Resultados salvos com sucesso</response>
+            <response code="400">Dados inválidos ou childId não encontrado</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.GamesController.GetSessionResult(System.Guid)">
+            <summary>
+            Recupera os resultados consolidados de uma sessão específica
+            </summary>
+            <remarks>
+            Busca e retorna os resultados salvos de uma sessão de jogo.
+            Permite ao psicólogo ou sistema revisar o desempenho consolidado de uma sessão.
+            
+            **Retorna:**
+            - sessionId: ID da sessão
+            - childId: ID da criança
+            - acertos: Quantidade de acertos
+            - percentage: Percentual de acurácia
+            - message: Feedback consolidado
+            - resultados: Array com histórico de cada desafio
+            - timestamps: Data de criação dos resultados
+            
+            **Útil para:**
+            - Revisar performance após sessão
+            - Gerar relatórios
+            - Análise de progresso longitudinal
+            </remarks>
+            <param name="sessionId">ID (Guid) da sessão cujos resultados buscar</param>
+            <returns>Dados consolidados da sessão</returns>
+            <response code="200">Resultados retornados com sucesso</response>
+            <response code="400">SessionId não encontrado ou inválido</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.MetricsController.GetChildMetrics(System.Guid,System.Nullable{System.Guid},System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            Obtém métricas consolidadas de desempenho de uma criança
+            </summary>
+            <remarks>
+            Retorna um relatório detalhado com estatísticas de desempenho de uma criança.
+            Dados são agregados de todas as sessões de jogo e podem ser filtrados por período.
+            **Este endpoint é especializado para psicólogos gerarem relatórios e análises.**
+            
+            **Métrica retornadas:**
+            - totalSessions: Número de sessões jogadas
+            - accuracyRate: Taxa geral de acurácia (0-1)
+            - averageResponseTime: Tempo médio de resposta em ms
+            - averageConfidence: Confiança média da IA
+            - emotionBreakdown: Detalhes por emoção (tentativas, acertos, taxa de acurácia)
+            - progressTrend: Análise de progresso ao longo do tempo
+            
+            **Parâmetros de filtro (opcionais):**
+            - sessionId: Se fornecido, retorna dados de sessão específica
+            - startDate: Data início do período (formato: YYYY-MM-DD)
+            - endDate: Data fim do período (formato: YYYY-MM-DD)
+            
+            **Exemplo de breakdown por emoção:**
+            ```json
+            {
+              "happy": {
+                "attempts": 8,
+                "correctAttempts": 7,
+                "accuracy": 0.875,
+                "avgConfidence": 0.88
+              }
+            }
+            ```
+            
+            **Útil para:**
+            - Avaliar progresso da criança
+            - Identificar emoções com dificuldade
+            - Planejar intervenções educacionais
+            - Gerar relatórios para pais/responsáveis
+            </remarks>
+            <param name="childId">ID (Guid) da criança (obrigatório)</param>
+            <param name="sessionId">ID (Guid) de uma sessão específica (opcional)</param>
+            <param name="startDate">Data de início para filtro de período (opcional)</param>
+            <param name="endDate">Data de fim para filtro de período (opcional)</param>
+            <returns>Relatório completo de métricas e análises</returns>
+            <response code="200">Métricas retornadas com sucesso</response>
+            <response code="400">ChildId não encontrado ou datas em formato incorreto</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.CreateUser(EMOPlay.Application.DTOs.User.CreateUserRequest)">
+            <summary>
+            Cria um novo usuário (criança ou psicólogo)
+            </summary>
+            <remarks>
+            Cria um novo usuário no sistema com email único. Valida se o email já existe
+            antes de criar o usuário. A senha é automaticamente criptografada usando SHA256.
+            
+            **Roles disponíveis:**
+            - 1 = Child (criança que usa a plataforma)
+            - 2 = Psychologist (psicólogo que gerencia as crianças)
+            
+            **Fluxo:**
+            1. Recebe dados do novo usuário (nome, email, senha, role)
+            2. Valida se o email já existe
+            3. Criptografa a senha com SHA256
+            4. Salva o usuário no banco de dados
+            5. Retorna os dados do usuário criado (sem a senha)
+            
+            **Este endpoint NÃO requer autenticação** para permitir que novos usuários se registrem.
+            </remarks>
+            <param name="request">Dados do novo usuário (nome, email, senha, role)</param>
+            <returns>UserResponse com os dados do usuário criado</returns>
+            <response code="201">Usuário criado com sucesso</response>
+            <response code="400">Email já existe ou dados inválidos</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.GetUserById(System.Guid)">
+            <summary>
+            Busca um usuário pelo ID (requer autenticação)
+            </summary>
+            <remarks>
+            Retorna os dados de um usuário específico usando seu ID (Guid).
+            Requer um token JWT válido no header Authorization.
+            
+            **Header obrigatório:**
+            ```
+            Authorization: Bearer {seu_token_jwt}
+            ```
+            </remarks>
+            <param name="userId">ID (Guid) do usuário a buscar</param>
+            <returns>Dados do usuário encontrado</returns>
+            <response code="200">Usuário encontrado com sucesso</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="401">Token não fornecido ou inválido</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.GetUserByEmail(System.String)">
+            <summary>
+            Busca um usuário pelo email (requer autenticação)
+            </summary>
+            <remarks>
+            Localiza e retorna um usuário pelo seu email.
+            Requer um token JWT válido no header Authorization.
+            
+            **Useful para:**
+            - Verificar informações de um usuário específico
+            - Obter detalhes do perfil de um usuário
+            </remarks>
+            <param name="email">Email do usuário a buscar</param>
+            <returns>Dados do usuário com esse email</returns>
+            <response code="200">Usuário encontrado com sucesso</response>
+            <response code="404">Usuário com esse email não encontrado</response>
+            <response code="401">Token não fornecido ou inválido</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.GetAllUsers">
+            <summary>
+            Lista todos os usuários do sistema
+            </summary>
+            <remarks>
+            Retorna uma lista com todos os usuários cadastrados no sistema (crianças e psicólogos).
+            Sem filtro de autenticação para permitir consultas gerais.
+            
+            **Retorna:**
+            - ID, nome, email, role de cada usuário
+            - Status ativo/inativo
+            - Datas de criação e atualização
+            </remarks>
+            <returns>Lista de todos os usuários cadastrados</returns>
+            <response code="200">Lista retornada com sucesso</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.GetChildren">
+            <summary>
+            Lista todas as crianças cadastradas (apenas psicólogos)
+            </summary>
+            <remarks>
+            Retorna uma lista com todos os usuários que têm role "Child" (role = 1).
+            **Este endpoint é restrito apenas para psicólogos (role = 2).**
+            Requer um token JWT válido de um psicólogo.
+            
+            **Fluxo de segurança:**
+            1. Valida se o token é de um psicólogo (role = 2)
+            2. Se for outro role, retorna 403 Forbidden
+            3. Se for psicólogo, retorna lista de todas as crianças ativas
+            
+            **Retorna:**
+            - Nome, email, role da criança
+            - ID e datas de criação
+            - Status ativo/inativo
+            </remarks>
+            <returns>Lista de usuários com role Child</returns>
+            <response code="200">Lista de crianças retornada com sucesso</response>
+            <response code="401">Token não fornecido ou inválido</response>
+            <response code="403">Acesso proibido - apenas psicólogos podem acessar este endpoint</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.UpdateUser(EMOPlay.Application.DTOs.User.UpdateUserRequest)">
+            <summary>
+            Atualiza os dados de um usuário (requer autenticação)
+            </summary>
+            <remarks>
+            Atualiza informações de um usuário existente. Permite modificar:
+            - Nome
+            - Email (com validação de unicidade)
+            - Senha (será re-criptografada)
+            - Role (só admin deveria fazer isso)
+            
+            Requer um token JWT válido no header Authorization.
+            
+            **Fluxo:**
+            1. Valida se o usuário a atualizar existe
+            2. Se mudar email, verifica se novo email não está em uso
+            3. Se fornecer nova senha, re-criptografa com SHA256
+            4. Atualiza o registro no banco de dados
+            5. Retorna os dados atualizados
+            </remarks>
+            <param name="request">Dados a atualizar (Id obrigatório, demais campos opcionais)</param>
+            <returns>Dados atualizados do usuário</returns>
+            <response code="200">Usuário atualizado com sucesso</response>
+            <response code="400">Email já em uso ou dados inválidos</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="401">Token não fornecido ou inválido</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.DeleteUser(System.Guid)">
+            <summary>
+            Deleta um usuário (soft delete - apenas marca como inativo)
+            </summary>
+            <remarks>
+            Realiza a exclusão lógica de um usuário, marcando-o como inativo (IsActive = false)
+            sem deletar os dados do banco de dados. Isso preserva a integridade referencial
+            dos dados históricos (sessões, desafios, etc).
+            
+            Requer um token JWT válido no header Authorization.
+            
+            **O que acontece:**
+            1. Busca o usuário pelo ID
+            2. Marca como IsActive = false
+            3. Atualiza o timestamp de atualização
+            4. Retorna 204 No Content
+            
+            **Nota:**
+            - O usuário será invisível em listas (filtradas por IsActive = true)
+            - Os dados históricos (sessões, desafios) continuam no banco
+            - Pode ser reativado manualmente no banco se necessário
+            </remarks>
+            <param name="userId">ID (Guid) do usuário a deletar</param>
+            <returns>Sem conteúdo (204 No Content)</returns>
+            <response code="204">Usuário deletado com sucesso</response>
+            <response code="404">Usuário não encontrado</response>
+            <response code="401">Token não fornecido ou inválido</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+        <member name="M:EMOPlay.API.Controllers.UsersController.UserExists(System.String)">
+            <summary>
+            Verifica se um email já existe no sistema
+            </summary>
+            <remarks>
+            Endpoint leve (HEAD request) que verifica se um email está registrado.
+            Retorna apenas headers sem corpo de resposta:
+            - 200 OK = Email existe
+            - 404 Not Found = Email não existe
+            
+            **Útil para:**
+            - Validação em tempo real no cadastro
+            - Verificar disponibilidade de email antes de criar usuário
+            </remarks>
+            <param name="email">Email a verificar</param>
+            <returns>Headers de status sem corpo</returns>
+            <response code="200">Email existe no sistema</response>
+            <response code="404">Email não encontrado/disponível</response>
+            <response code="500">Erro interno do servidor</response>
+        </member>
+    </members>
+</doc>
