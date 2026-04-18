@@ -3348,3 +3348,128 @@ System.InvalidOperationException: No authentication handler is registered for th
 2026-04-04 20:02:47.110 -03:00 [DBG] Connection id "0HNKIIU8IAJQJ" sending FIN because: "The Socket transport's send loop completed gracefully."
 2026-04-04 20:02:47.112 -03:00 [DBG] Connection id "0HNKIIU8IAJQJ" disconnecting.
 2026-04-04 20:02:47.114 -03:00 [DBG] Connection id "0HNKIIU8IAJQJ" stopped.
+2026-04-04 20:31:49.115 -03:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2026-04-04 20:31:49.194 -03:00 [INF] Starting EMO-Play API
+2026-04-04 20:31:49.198 -03:00 [DBG] Hosting starting
+2026-04-04 20:31:49.213 -03:00 [INF] User profile is available. Using 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-04-04 20:31:49.222 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-9b575564-b4c9-4965-874a-07dc6132a656.xml'.
+2026-04-04 20:31:49.230 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-e27a62b1-b860-4127-a74e-a28038be4d98.xml'.
+2026-04-04 20:31:49.233 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-f7a2d4b1-8e7d-4f74-81a8-60424ea76d86.xml'.
+2026-04-04 20:31:49.241 -03:00 [DBG] Found key {9b575564-b4c9-4965-874a-07dc6132a656}.
+2026-04-04 20:31:49.246 -03:00 [DBG] Found key {e27a62b1-b860-4127-a74e-a28038be4d98}.
+2026-04-04 20:31:49.248 -03:00 [DBG] Found key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86}.
+2026-04-04 20:31:49.253 -03:00 [DBG] Considering key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} with expiration date 2026-07-03 18:24:57Z as default key.
+2026-04-04 20:31:49.257 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2026-04-04 20:31:49.260 -03:00 [DBG] Decrypting secret element using Windows DPAPI.
+2026-04-04 20:31:49.263 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2026-04-04 20:31:49.268 -03:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2026-04-04 20:31:49.271 -03:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2026-04-04 20:31:49.274 -03:00 [DBG] Using key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} as the default key.
+2026-04-04 20:31:49.276 -03:00 [DBG] Key ring with default key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} was loaded during application startup.
+2026-04-04 20:31:49.335 -03:00 [INF] Now listening on: http://localhost:5000
+2026-04-04 20:31:49.337 -03:00 [DBG] Loaded hosting startup assembly EMOPlay.API
+2026-04-04 20:31:49.339 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-04-04 20:31:49.340 -03:00 [INF] Hosting environment: Development
+2026-04-04 20:31:49.342 -03:00 [INF] Content root path: C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API
+2026-04-04 20:31:49.343 -03:00 [DBG] Hosting started
+2026-04-04 20:33:13.171 -03:00 [DBG] Connection id "0HNKIKA50QK27" accepted.
+2026-04-04 20:33:13.174 -03:00 [DBG] Connection id "0HNKIKA50QK27" started.
+2026-04-04 20:33:13.177 -03:00 [DBG] Connection id "0HNKIKA50QK28" accepted.
+2026-04-04 20:33:13.180 -03:00 [DBG] Connection id "0HNKIKA50QK28" started.
+2026-04-04 20:33:13.991 -03:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - null null
+2026-04-04 20:33:13.996 -03:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2026-04-04 20:33:14.014 -03:00 [DBG] No candidates found for the request path '/swagger/v1/swagger.json'
+2026-04-04 20:33:14.018 -03:00 [DBG] Request did not match any endpoints
+2026-04-04 20:33:14.392 -03:00 [DBG] Connection id "0HNKIKA50QK27" completed keep alive response.
+2026-04-04 20:33:14.395 -03:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 404.9215ms
+2026-04-04 20:33:16.009 -03:00 [DBG] Connection id "0HNKIKA50QK28" received FIN.
+2026-04-04 20:33:16.009 -03:00 [DBG] Connection id "0HNKIKA50QK27" received FIN.
+2026-04-04 20:33:16.012 -03:00 [DBG] Connection id "0HNKIKA50QK28" sending FIN because: "The Socket transport's send loop completed gracefully."
+2026-04-04 20:33:16.013 -03:00 [DBG] Connection id "0HNKIKA50QK27" sending FIN because: "The Socket transport's send loop completed gracefully."
+2026-04-04 20:33:16.015 -03:00 [DBG] Connection id "0HNKIKA50QK28" disconnecting.
+2026-04-04 20:33:16.016 -03:00 [DBG] Connection id "0HNKIKA50QK27" disconnecting.
+2026-04-04 20:33:16.018 -03:00 [DBG] Connection id "0HNKIKA50QK28" stopped.
+2026-04-04 20:33:16.019 -03:00 [DBG] Connection id "0HNKIKA50QK27" stopped.
+2026-04-04 21:09:09.492 -03:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2026-04-04 21:09:09.579 -03:00 [INF] Starting EMO-Play API
+2026-04-04 21:09:09.582 -03:00 [DBG] Hosting starting
+2026-04-04 21:09:09.596 -03:00 [INF] User profile is available. Using 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-04-04 21:09:09.606 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-9b575564-b4c9-4965-874a-07dc6132a656.xml'.
+2026-04-04 21:09:09.689 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-e27a62b1-b860-4127-a74e-a28038be4d98.xml'.
+2026-04-04 21:09:09.693 -03:00 [DBG] Reading data from file 'C:\Users\Kevin Costa\AppData\Local\ASP.NET\DataProtection-Keys\key-f7a2d4b1-8e7d-4f74-81a8-60424ea76d86.xml'.
+2026-04-04 21:09:09.722 -03:00 [DBG] Found key {9b575564-b4c9-4965-874a-07dc6132a656}.
+2026-04-04 21:09:09.727 -03:00 [DBG] Found key {e27a62b1-b860-4127-a74e-a28038be4d98}.
+2026-04-04 21:09:09.728 -03:00 [DBG] Found key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86}.
+2026-04-04 21:09:09.734 -03:00 [DBG] Considering key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} with expiration date 2026-07-03 18:24:57Z as default key.
+2026-04-04 21:09:09.739 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2026-04-04 21:09:09.742 -03:00 [DBG] Decrypting secret element using Windows DPAPI.
+2026-04-04 21:09:09.744 -03:00 [DBG] Forwarded activator type request from Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60 to Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60
+2026-04-04 21:09:09.749 -03:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2026-04-04 21:09:09.752 -03:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2026-04-04 21:09:09.755 -03:00 [DBG] Using key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} as the default key.
+2026-04-04 21:09:09.757 -03:00 [DBG] Key ring with default key {f7a2d4b1-8e7d-4f74-81a8-60424ea76d86} was loaded during application startup.
+2026-04-04 21:09:09.812 -03:00 [INF] Now listening on: http://localhost:5000
+2026-04-04 21:09:09.814 -03:00 [DBG] Loaded hosting startup assembly EMOPlay.API
+2026-04-04 21:09:09.815 -03:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-04-04 21:09:09.816 -03:00 [INF] Hosting environment: Development
+2026-04-04 21:09:09.817 -03:00 [INF] Content root path: C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API
+2026-04-04 21:09:09.819 -03:00 [DBG] Hosting started
+2026-04-04 21:14:36.426 -03:00 [DBG] Connection id "0HNKIL1930IN3" accepted.
+2026-04-04 21:14:36.430 -03:00 [DBG] Connection id "0HNKIL1930IN3" started.
+2026-04-04 21:14:36.488 -03:00 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5000/api/Auth/login - null null
+2026-04-04 21:14:36.497 -03:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2026-04-04 21:14:36.528 -03:00 [DBG] 1 candidate(s) found for the request path '/api/Auth/login'
+2026-04-04 21:14:36.534 -03:00 [DBG] Request matched endpoint '405 HTTP Method Not Supported'
+2026-04-04 21:14:36.595 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2026-04-04 21:14:36.598 -03:00 [WRN] Failed to determine the https port for redirect.
+2026-04-04 21:14:36.602 -03:00 [DBG] The request has an origin header: 'http://localhost:5173'.
+2026-04-04 21:14:36.605 -03:00 [INF] CORS policy execution successful.
+2026-04-04 21:14:36.609 -03:00 [DBG] The request is a preflight request.
+2026-04-04 21:14:36.619 -03:00 [DBG] Connection id "0HNKIL1930IN3" completed keep alive response.
+2026-04-04 21:14:36.623 -03:00 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5000/api/Auth/login - 204 null null 138.1074ms
+2026-04-04 21:14:36.638 -03:00 [INF] Request starting HTTP/1.1 POST http://localhost:5000/api/Auth/login - application/json 65
+2026-04-04 21:14:36.645 -03:00 [DBG] 1 candidate(s) found for the request path '/api/Auth/login'
+2026-04-04 21:14:36.653 -03:00 [DBG] Endpoint 'EMOPlay.API.Controllers.AuthController.Login (EMOPlay.API)' with route pattern 'api/Auth/login' is valid for the request path '/api/Auth/login'
+2026-04-04 21:14:36.657 -03:00 [DBG] Request matched endpoint 'EMOPlay.API.Controllers.AuthController.Login (EMOPlay.API)'
+2026-04-04 21:14:36.660 -03:00 [DBG] Static files was skipped as the request already matched an endpoint.
+2026-04-04 21:14:36.663 -03:00 [DBG] The request has an origin header: 'http://localhost:5173'.
+2026-04-04 21:14:36.666 -03:00 [INF] CORS policy execution successful.
+2026-04-04 21:14:36.699 -03:00 [DBG] AuthenticationScheme: Bearer was not authenticated.
+2026-04-04 21:14:36.705 -03:00 [INF] Executing endpoint 'EMOPlay.API.Controllers.AuthController.Login (EMOPlay.API)'
+2026-04-04 21:14:36.745 -03:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EMOPlay.Application.DTOs.Auth.LoginResponse]] Login(EMOPlay.Application.DTOs.Auth.LoginRequest) on controller EMOPlay.API.Controllers.AuthController (EMOPlay.API).
+2026-04-04 21:14:36.752 -03:00 [DBG] Execution plan of authorization filters (in the following order): ["None"]
+2026-04-04 21:14:36.756 -03:00 [DBG] Execution plan of resource filters (in the following order): ["None"]
+2026-04-04 21:14:36.760 -03:00 [DBG] Execution plan of action filters (in the following order): ["Microsoft.AspNetCore.Mvc.ModelBinding.UnsupportedContentTypeFilter (Order: -3000)","Microsoft.AspNetCore.Mvc.Infrastructure.ModelStateInvalidFilter (Order: -2000)"]
+2026-04-04 21:14:36.765 -03:00 [DBG] Execution plan of exception filters (in the following order): ["None"]
+2026-04-04 21:14:36.768 -03:00 [DBG] Execution plan of result filters (in the following order): ["Microsoft.AspNetCore.Mvc.Infrastructure.ClientErrorResultFilter (Order: -2000)"]
+2026-04-04 21:14:36.775 -03:00 [DBG] Executing controller factory for controller EMOPlay.API.Controllers.AuthController (EMOPlay.API)
+2026-04-04 21:14:36.779 -03:00 [DBG] Executed controller factory for controller EMOPlay.API.Controllers.AuthController (EMOPlay.API)
+2026-04-04 21:14:36.789 -03:00 [DBG] Attempting to bind parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest' ...
+2026-04-04 21:14:36.795 -03:00 [DBG] Attempting to bind parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest' using the name '' in request data ...
+2026-04-04 21:14:36.800 -03:00 [DBG] Selected input formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonInputFormatter' for content type 'application/json'.
+2026-04-04 21:14:36.819 -03:00 [DBG] Connection id "0HNKIL1930IN3", Request id "0HNKIL1930IN3:00000002": started reading request body.
+2026-04-04 21:14:36.824 -03:00 [DBG] Connection id "0HNKIL1930IN3", Request id "0HNKIL1930IN3:00000002": done reading request body.
+2026-04-04 21:14:36.832 -03:00 [DBG] JSON input formatter succeeded, deserializing to type 'EMOPlay.Application.DTOs.Auth.LoginRequest'
+2026-04-04 21:14:36.835 -03:00 [DBG] Done attempting to bind parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest'.
+2026-04-04 21:14:36.838 -03:00 [DBG] Done attempting to bind parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest'.
+2026-04-04 21:14:36.841 -03:00 [DBG] Attempting to validate the bound parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest' ...
+2026-04-04 21:14:36.852 -03:00 [DBG] Done attempting to validate the bound parameter 'request' of type 'EMOPlay.Application.DTOs.Auth.LoginRequest'.
+2026-04-04 21:14:36.860 -03:00 [INF] Login attempt for email: kevin123@gmail.com
+2026-04-04 21:14:37.049 -03:00 [INF] User logged in successfully with ID: "b31b116a-fdb0-4b31-8258-b98033927762"
+2026-04-04 21:14:37.054 -03:00 [DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter"]
+2026-04-04 21:14:37.061 -03:00 [DBG] No information found on request to perform content negotiation.
+2026-04-04 21:14:37.063 -03:00 [DBG] Attempting to select an output formatter without using a content type as no explicit content types were specified for the response.
+2026-04-04 21:14:37.065 -03:00 [DBG] Attempting to select the first formatter in the output formatters list which can write the result.
+2026-04-04 21:14:37.068 -03:00 [DBG] Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter' and content type 'application/json' to write the response.
+2026-04-04 21:14:37.070 -03:00 [INF] Executing OkObjectResult, writing value of type 'EMOPlay.Application.DTOs.Auth.LoginResponse'.
+2026-04-04 21:14:37.096 -03:00 [INF] Executed action EMOPlay.API.Controllers.AuthController.Login (EMOPlay.API) in 321.2332ms
+2026-04-04 21:14:37.099 -03:00 [INF] Executed endpoint 'EMOPlay.API.Controllers.AuthController.Login (EMOPlay.API)'
+2026-04-04 21:14:37.104 -03:00 [DBG] Connection id "0HNKIL1930IN3" completed keep alive response.
+2026-04-04 21:14:37.106 -03:00 [INF] Request finished HTTP/1.1 POST http://localhost:5000/api/Auth/login - 200 null application/json; charset=utf-8 468.6058ms
+2026-04-04 21:14:44.765 -03:00 [DBG] Connection id "0HNKIL1930IN3" received FIN.
+2026-04-04 21:14:44.769 -03:00 [DBG] Connection id "0HNKIL1930IN3" sending FIN because: "The Socket transport's send loop completed gracefully."
+2026-04-04 21:14:44.774 -03:00 [DBG] Connection id "0HNKIL1930IN3" disconnecting.
+2026-04-04 21:14:44.778 -03:00 [DBG] Connection id "0HNKIL1930IN3" stopped.
+2026-04-04 21:15:43.604 -03:00 [INF] Application is shutting down...
+2026-04-04 21:15:43.606 -03:00 [DBG] Hosting stopping
+2026-04-04 21:15:43.620 -03:00 [DBG] Hosting stopped

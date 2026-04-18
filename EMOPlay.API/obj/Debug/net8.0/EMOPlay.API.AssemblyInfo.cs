@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EMOPlay.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2fb29aca7673f082b05cc7d78c65b2c6e20ca91d")]
 [assembly: System.Reflection.AssemblyProductAttribute("EMOPlay.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EMOPlay.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

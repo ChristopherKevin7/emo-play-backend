@@ -1679,6 +1679,7 @@
           "AutoMapper": "13.0.1",
           "EMOPlay.Domain": "1.0.0",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
           "System.IdentityModel.Tokens.Jwt": "7.1.0"
         },
         "compile": {

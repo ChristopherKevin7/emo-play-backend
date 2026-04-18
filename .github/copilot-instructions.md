@@ -49,7 +49,7 @@ Recebe imagem da webcam e solicita análise ao módulo de IA.
 {
   "sessionId": "uuid",
   "image": "base64-encoded-image",
-  "targetEmotion": "happy" | "sad" | "angry" | "surprised" | "fearful" | "disgusted" | "neutral",
+  "targetEmotion": "happy" | "sad" | "angry" | "surprised" | "fearful" | "disgusted",
   "challengeId": "uuid"
 }
 ```

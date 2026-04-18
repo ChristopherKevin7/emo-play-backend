@@ -35,16 +35,18 @@ public class GameService : IGameService
             ChildId = request.ChildId,
             GameMode = gameMode,
             Status = GameSessionStatusEnum.Completed,
-            TotalPoints = request.Statistics.CorrectAnswers * 10, // 10 pontos por acerto
+            TotalPoints = request.TotalScore * 10, // 10 pontos por acerto
             StartedAt = request.StartTime,
             EndedAt = request.EndTime,
-            AccuracyRate = request.Statistics.AccuracyRate
+            AccuracyRate = request.AccuracyRate,
+            Level = request.Level
         };
 
         await _unitOfWork.GameSessions.AddAsync(gameSession);
 
         // Create challenges for each result
         var challenges = new List<Challenge>();
+        int challengeNumber = 1;
         foreach (var result in request.Results)
         {
             // Parse emotions from string to enum
@@ -59,12 +61,13 @@ public class GameService : IGameService
                 ChildResponse = detectedEmotionEnum,
                 IsCorrect = result.IsCorrect,
                 ResponseTimeMs = (int)result.ResponseTime,
-                Confidence = result.IsCorrect ? 1.0 : 0.0, // Simplificado, pode receber do frontend se disponível
+                Confidence = result.IsCorrect ? 1.0 : 0.0, // Simplificado
                 ImageUrl = "",  // Pode ser adicionado ao request se necessário
                 CreatedAt = result.Timestamp
             };
 
             challenges.Add(challenge);
+            challengeNumber++;
         }
 
         foreach (var challenge in challenges)
@@ -73,16 +76,16 @@ public class GameService : IGameService
         }
 
         // Create session result with consolidated statistics
-        var challengeResultsJson = JsonSerializer.Serialize(request.Results);
+        var challengeResultsJson = System.Text.Json.JsonSerializer.Serialize(request.Results);
 
         var sessionResult = new SessionResult
         {
             Id = Guid.NewGuid(),
             SessionId = gameSession.Id,
-            CorrectAnswers = request.Statistics.CorrectAnswers,
-            TotalChallenges = request.Statistics.TotalChallenges,
-            Percentage = request.Statistics.AccuracyRate,
-            Message = $"Game completed. Accuracy: {request.Statistics.AccuracyRate:F2}%. Level: {request.LevelId}",
+            CorrectAnswers = request.TotalScore,
+            TotalChallenges = request.TotalChallenges,
+            Percentage = request.AccuracyRate,
+            Message = $"Game completed. Accuracy: {request.AccuracyRate:F2}%. Level: {request.Level}",
             ResultsJson = challengeResultsJson,
             CreatedAt = DateTime.UtcNow
         };
@@ -94,9 +97,9 @@ public class GameService : IGameService
         return new SessionResultResponse
         {
             SessionId = gameSession.Id,
-            Acertos = request.Statistics.CorrectAnswers,
-            Percentage = request.Statistics.AccuracyRate,
-            Mensagem = $"Jogo finalizado com sucesso! Acertos: {request.Statistics.CorrectAnswers}/{request.Statistics.TotalChallenges}",
+            Acertos = request.TotalScore,
+            Percentage = request.AccuracyRate,
+            Mensagem = $"Jogo finalizado com sucesso! Acertos: {request.TotalScore}/{request.TotalChallenges}",
             Resultados = new List<ResultadoItem>(), // Pode ser preenchido se necessário
             Armazenado = true,
             Mensagem_Retorno = "Resultados armazenados com sucesso!"

@@ -1,14 +1,32 @@
-using EMOPlay.Application.DTOs.Emotion;
+using System.Text.Json.Serialization;
 
 namespace EMOPlay.Application.Interfaces;
 
 public interface IAIService
 {
-    Task<AIEmotionAnalysisResult> AnalyzeEmotionAsync(string base64Image, string targetEmotion);
+    /// <summary>
+    /// Envia múltiplas imagens para o módulo de IA e recebe predições com top emoções
+    /// </summary>
+    Task<AIBatchAnalysisResult> AnalyzeBatchAsync(List<string> base64Images, string targetEmotion);
 }
 
-public class AIEmotionAnalysisResult
+/// <summary>
+/// Resultado da análise do módulo de IA contendo lista de predições
+/// </summary>
+public class AIBatchAnalysisResult
 {
-    public string DetectedEmotion { get; set; }
-    public double Confidence { get; set; }
+    [JsonPropertyName("predictions")]
+    public List<AIEmotionPrediction> Predictions { get; set; } = new();
+}
+
+/// <summary>
+/// Predição individual retornada pelo módulo de IA
+/// </summary>
+public class AIEmotionPrediction
+{
+    [JsonPropertyName("emotion")]
+    public string Emotion { get; set; } = string.Empty;
+    
+    [JsonPropertyName("score")]
+    public double Score { get; set; }
 }

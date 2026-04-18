@@ -145,3 +145,4 @@ C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API\bin\Debug\net
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API\bin\Debug\net8.0\EMOPlay.API.xml
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API\obj\Debug\net8.0\EMOPlay.API.xml
+C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.API\obj\Debug\net8.0\EMOPlay.API.sourcelink.json

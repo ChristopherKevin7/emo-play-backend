@@ -9,11 +9,13 @@ namespace EMOPlay.API.Controllers;
 public class EmotionsController : ControllerBase
 {
     private readonly IAIService _aiService;
+    private readonly IEmotionService _emotionService;
     private readonly ILogger<EmotionsController> _logger;
 
-    public EmotionsController(IAIService aiService, ILogger<EmotionsController> logger)
+    public EmotionsController(IAIService aiService, IEmotionService emotionService, ILogger<EmotionsController> logger)
     {
         _aiService = aiService;
+        _emotionService = emotionService;
         _logger = logger;
     }
 
@@ -68,15 +70,18 @@ public class EmotionsController : ControllerBase
             if (string.IsNullOrEmpty(request.TargetEmotion))
                 return BadRequest(new { error = "Target emotion is required" });
 
-            // Call AI service
-            var aiResult = await _aiService.AnalyzeEmotionAsync(request.Image, request.TargetEmotion);
+            // Call AI service (send single image as a list)
+            var aiResult = await _aiService.AnalyzeBatchAsync(new List<string> { request.Image }, request.TargetEmotion);
 
-            var isCorrect = aiResult.DetectedEmotion.Equals(request.TargetEmotion, StringComparison.OrdinalIgnoreCase);
+            var topPrediction = aiResult.Predictions.OrderByDescending(p => p.Score).FirstOrDefault();
+            var detectedEmotion = topPrediction?.Emotion ?? "unknown";
+            var confidence = topPrediction?.Score ?? 0;
+            var isCorrect = detectedEmotion.Equals(request.TargetEmotion, StringComparison.OrdinalIgnoreCase);
 
             var response = new AnalyzeEmotionResponse
             {
-                DetectedEmotion = aiResult.DetectedEmotion,
-                Confidence = aiResult.Confidence,
+                DetectedEmotion = detectedEmotion,
+                Confidence = confidence,
                 IsCorrect = isCorrect,
                 AnalysisTimestamp = DateTime.UtcNow
             };
@@ -87,6 +92,91 @@ public class EmotionsController : ControllerBase
         {
             _logger.LogError($"Error analyzing emotion: {ex.Message}");
             return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Processa múltiplas emoções com múltiplos frames por emoção para análise probabilística
+    /// </summary>
+    /// <remarks>
+    /// Permite que o frontend envie múltiplas tentativas com múltiplos frames cada,
+    /// processando todas e retornando um resultado consolidado com top predictions.
+    /// 
+    /// **Fluxo de processamento:**
+    /// 1. Recebe um array de tentativas, cada uma com emoção alvo e array de imagens (frames)
+    /// 2. Para cada tentativa, envia as imagens para o módulo de IA
+    /// 3. IA retorna top 3 predictions com scores por emoção
+    /// 4. Aplica regras de avaliação para determinar acerto
+    /// 5. Retorna resultado consolidado com averageScores e topPredictions
+    /// 6. Salva resultados no MongoDB
+    /// 
+    /// **Regra de acerto:**
+    /// - Emoção alvo está no TOP 2 predictions
+    /// - OU score médio da emoção alvo > 0.4
+    /// 
+    /// **Exemplo de entrada:**
+    /// ```json
+    /// {
+    ///   "userId": "550e8400-e29b-41d4-a716-446655440000",
+    ///   "attempts": [
+    ///     {
+    ///       "targetEmotion": "happy",
+    ///       "images": ["base64_frame1...", "base64_frame2...", "base64_frame3..."]
+    ///     },
+    ///     {
+    ///       "targetEmotion": "sad",
+    ///       "images": ["base64_frame1...", "base64_frame2...", "base64_frame3..."]
+    ///     }
+    ///   ]
+    /// }
+    /// ```
+    /// </remarks>
+    /// <param name="request">Requisição com userId, sessionId e array de tentativas</param>
+    /// <returns>Resposta consolidada com resultados individuais e estatísticas</returns>
+    /// <response code="200">Batch processado com sucesso</response>
+    /// <response code="400">Erro na validação de entrada</response>
+    /// <response code="500">Erro ao processar batch ou comunicar com IA</response>
+    [HttpPost("batch-analyze")]
+    [ProducesResponseType(typeof(BatchAnalyzeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BatchAnalyzeResponse>> BatchAnalyze([FromBody] BatchAnalyzeRequest request)
+    {
+        try
+        {
+            var sessionId = request.SessionId ?? Guid.NewGuid().ToString();
+            _logger.LogInformation("Iniciando batch analysis para sessão {SessionId} com {Count} emoções",
+                sessionId, request.Attempts?.Count ?? 0);
+
+            if (request == null)
+                return BadRequest(new { error = "Request is required" });
+
+            if (string.IsNullOrEmpty(request.UserId))
+                return BadRequest(new { error = "UserId is required" });
+
+            if (request.Attempts == null || request.Attempts.Count == 0)
+                return BadRequest(new { error = "At least one attempt is required" });
+
+            // Validar que todas as tentativas têm dados necessários
+            if (request.Attempts.Any(a => string.IsNullOrEmpty(a.TargetEmotion) || a.Images == null || a.Images.Count == 0))
+                return BadRequest(new { error = "All attempts must have targetEmotion and at least one image in images array" });
+
+            var response = await _emotionService.BatchAnalyzeAsync(request);
+
+            _logger.LogInformation("Batch analysis concluído para sessão {SessionId}: {Correct}/{Total} corretos ({Accuracy:P2})",
+                response.SessionId, response.Correct, response.Total, response.Accuracy);
+
+            return Ok(response);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning("Erro de validação no batch analysis: {Message}", ex.Message);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Erro ao processar batch analysis: {Message}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, 
+                new { error = "Erro ao processar batch analysis", details = ex.Message });
         }
     }
 }

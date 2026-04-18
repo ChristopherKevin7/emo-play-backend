@@ -12,6 +12,7 @@ public class GameSession
     public DateTime StartedAt { get; set; }
     public DateTime? EndedAt { get; set; }
     public double? AccuracyRate { get; set; }
+    public string Level { get; set; } = "easy"; // easy, medium, hard
 
     // Navigation properties
     public virtual Child? Child { get; set; }

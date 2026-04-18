@@ -15,3 +15,4 @@ C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Infrastructure\ob
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Infrastructure\obj\Debug\net8.0\refint\EMOPlay.Infrastructure.dll
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Infrastructure\obj\Debug\net8.0\EMOPlay.Infrastructure.pdb
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Infrastructure\obj\Debug\net8.0\ref\EMOPlay.Infrastructure.dll
+C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Infrastructure\obj\Debug\net8.0\EMOPlay.Infrastructure.sourcelink.json

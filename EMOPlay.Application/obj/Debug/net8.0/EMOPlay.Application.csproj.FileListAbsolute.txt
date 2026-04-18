@@ -13,3 +13,4 @@ C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Application\obj\D
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Application\obj\Debug\net8.0\refint\EMOPlay.Application.dll
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Application\obj\Debug\net8.0\EMOPlay.Application.pdb
 C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Application\obj\Debug\net8.0\ref\EMOPlay.Application.dll
+C:\Users\Kevin Costa\Desktop\FACULDADE\New_Tcc\backend\EMOPlay.Application\obj\Debug\net8.0\EMOPlay.Application.sourcelink.json

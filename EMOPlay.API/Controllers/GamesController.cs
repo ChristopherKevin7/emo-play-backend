@@ -59,7 +59,7 @@ public class GamesController : ControllerBase
     {
         try
         {
-            _logger.LogInformation($"Saving game results for child {request.ChildId}. Mode: {request.GameMode}, Level: {request.LevelId}, Accuracy: {request.Statistics.AccuracyRate}%");
+            _logger.LogInformation($"Saving game results for child {request.ChildId}. Mode: {request.GameMode}, Level: {request.Level}, Accuracy: {request.AccuracyRate}%");
             var response = await _gameService.SaveGameResultAsync(request);
             return Ok(response);
         }
