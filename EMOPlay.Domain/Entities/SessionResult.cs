@@ -4,6 +4,7 @@ public class SessionResult
 {
     public Guid Id { get; set; }
     public Guid SessionId { get; set; }
+    public Guid UserId { get; set; }
     public int CorrectAnswers { get; set; }
     public int TotalChallenges { get; set; }
     public double Percentage { get; set; }

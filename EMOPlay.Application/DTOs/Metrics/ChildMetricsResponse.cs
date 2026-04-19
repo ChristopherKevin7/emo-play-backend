@@ -39,16 +39,25 @@ public class Desafio1MetricsData
 }
 
 /// <summary>
-/// Dados de métricas para o Desafio 2 - Expressar emoções com confiança
+/// Dados de métricas para o Desafio 2 - Expressar emoções (modelo probabilístico)
 /// </summary>
 public class Desafio2MetricsData
 {
     public int TotalSessions { get; set; }
     public double AccuracyRate { get; set; }
+    
+    /// <summary>
+    /// Média geral de tempo de resposta (ms) entre todas as emoções e tentativas
+    /// </summary>
     public int AverageResponseTimeMs { get; set; }
-    public double AverageConfidence { get; set; }
+    
     public Dictionary<string, Desafio2EmotionBreakdown> EmotionBreakdown { get; set; }
     public List<ProgressTrendItem> ProgressTrend { get; set; }
+    
+    /// <summary>
+    /// Histórico detalhado de cada sessão com top predictions por emoção
+    /// </summary>
+    public List<Desafio2HistoricAttempt> HistoricAttempts { get; set; }
 }
 
 /// <summary>
@@ -62,14 +71,65 @@ public class Desafio1EmotionBreakdown
 }
 
 /// <summary>
-/// Breakdown de métricas por emoção - Desafio 2 (com confiança)
+/// Breakdown de métricas por emoção - Desafio 2 (com scores probabilísticos)
 /// </summary>
 public class Desafio2EmotionBreakdown
 {
     public int Attempts { get; set; }
     public int CorrectAttempts { get; set; }
     public double Accuracy { get; set; }
-    public double AvgConfidence { get; set; }
+    
+    /// <summary>
+    /// Score médio da emoção alvo quando era o target
+    /// </summary>
+    public double AvgTargetScore { get; set; }
+    
+    /// <summary>
+    /// Tempo médio de resposta em milissegundos para essa emoção
+    /// </summary>
+    public int AvgResponseTimeMs { get; set; }
+}
+
+/// <summary>
+/// Histórico de uma sessão do Desafio 2
+/// </summary>
+public class Desafio2HistoricAttempt
+{
+    public DateTime Date { get; set; }
+    public double AccuracyRate { get; set; }
+    
+    /// <summary>
+    /// Detalhes por emoção nessa sessão (com top 3 predictions)
+    /// </summary>
+    public List<Desafio2AttemptDetail> Details { get; set; } = new();
+}
+
+/// <summary>
+/// Detalhe de uma emoção específica dentro de uma sessão do Desafio 2
+/// </summary>
+public class Desafio2AttemptDetail
+{
+    public required string TargetEmotion { get; set; }
+    public bool IsCorrect { get; set; }
+    
+    /// <summary>
+    /// Tempo de resposta em milissegundos
+    /// </summary>
+    public int ResponseTimeMs { get; set; }
+    
+    /// <summary>
+    /// Top 3 emoções detectadas com seus scores
+    /// </summary>
+    public List<Desafio2Prediction> TopPredictions { get; set; } = new();
+}
+
+/// <summary>
+/// Predição de emoção com score (para métricas)
+/// </summary>
+public class Desafio2Prediction
+{
+    public required string Emotion { get; set; }
+    public double Score { get; set; }
 }
 
 /// <summary>

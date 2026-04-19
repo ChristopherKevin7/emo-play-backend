@@ -14,4 +14,9 @@ public class BatchAttempt
     /// Lista de imagens em base64 (múltiplos frames capturados)
     /// </summary>
     public required List<string> Images { get; set; }
+    
+    /// <summary>
+    /// Tempo de resposta em milissegundos
+    /// </summary>
+    public int ResponseTime { get; set; }
 }

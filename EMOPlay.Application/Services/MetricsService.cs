@@ -1,7 +1,9 @@
 using EMOPlay.Application.DTOs.Metrics;
+using EMOPlay.Application.DTOs.Emotion;
 using EMOPlay.Application.Interfaces;
 using EMOPlay.Domain.Interfaces;
 using EMOPlay.Domain.Enums;
+using System.Text.Json;
 
 namespace EMOPlay.Application.Services;
 
@@ -47,13 +49,22 @@ public class MetricsService : IMetricsService
         // Monta dados para Desafio_1 (Identificação de Emoções)
         var desafio_1 = BuildDesafio1Metrics(allChallenges, sessions);
 
-        // Retorna com Desafio_2 como null (será preenchido no futuro)
+        // Busca SessionResults para Desafio_2 (Expressar emoções)
+        var sessionResults = await _unitOfWork.SessionResults.FindAsync(sr => sr.UserId == childId);
+        
+        if (startDate.HasValue)
+            sessionResults = sessionResults.Where(sr => sr.CreatedAt.Date >= startDate.Value.Date).ToList();
+        if (endDate.HasValue)
+            sessionResults = sessionResults.Where(sr => sr.CreatedAt.Date <= endDate.Value.Date).ToList();
+
+        var desafio_2 = BuildDesafio2Metrics(sessionResults.ToList());
+
         return new ChildMetricsResponse
         {
             ChildId = childId,
             ChildName = child.Name,
             Desafio_1 = desafio_1,
-            Desafio_2 = null, // Futuro
+            Desafio_2 = desafio_2,
             Disclaimer = Disclaimer
         };
     }
@@ -141,9 +152,135 @@ public class MetricsService : IMetricsService
                     Attempts = emotionChallenges.Count,
                     CorrectAttempts = correctAttempts,
                     Accuracy = accuracy,
-                    AvgConfidence = emotionChallenges.Average(c => c.Confidence)
+                    AvgTargetScore = emotionChallenges.Average(c => c.Confidence)
                 };
             }
+        }
+
+        return breakdown;
+    }
+
+    /// <summary>
+    /// Constrói métricas do Desafio 2 a partir dos SessionResults (batch-analyze)
+    /// </summary>
+    private Desafio2MetricsData BuildDesafio2Metrics(List<Domain.Entities.SessionResult> sessionResults)
+    {
+        if (!sessionResults.Any())
+        {
+            return new Desafio2MetricsData
+            {
+                TotalSessions = 0,
+                AccuracyRate = 0,
+                EmotionBreakdown = new Dictionary<string, Desafio2EmotionBreakdown>(),
+                ProgressTrend = new List<ProgressTrendItem>(),
+                HistoricAttempts = new List<Desafio2HistoricAttempt>()
+            };
+        }
+
+        // Deserializar todos os resultados de todas as sessões
+        var allParsedResults = new List<(Domain.Entities.SessionResult session, List<BatchAnalyzeResult> results)>();
+        
+        foreach (var sr in sessionResults)
+        {
+            try
+            {
+                var results = JsonSerializer.Deserialize<List<BatchAnalyzeResult>>(sr.ResultsJson,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (results != null)
+                    allParsedResults.Add((sr, results));
+            }
+            catch { /* skip malformed entries */ }
+        }
+
+        // Flatten all individual results
+        var allResults = allParsedResults.SelectMany(p => p.results).ToList();
+
+        // Accuracy geral
+        var totalAttempts = allResults.Count;
+        var correctAttempts = allResults.Count(r => r.IsCorrect);
+        var accuracyRate = totalAttempts > 0 ? (double)correctAttempts / totalAttempts : 0;
+
+        // Emotion breakdown
+        var emotionBreakdown = BuildDesafio2EmotionBreakdownFromResults(allResults);
+
+        // Progress trend (por dia)
+        var progressTrend = allParsedResults
+            .GroupBy(p => p.session.CreatedAt.Date)
+            .OrderBy(g => g.Key)
+            .Select(g =>
+            {
+                var dayResults = g.SelectMany(p => p.results).ToList();
+                var dayCorrect = dayResults.Count(r => r.IsCorrect);
+                return new ProgressTrendItem
+                {
+                    Date = g.Key,
+                    Accuracy = dayResults.Count > 0 ? (double)dayCorrect / dayResults.Count : 0
+                };
+            })
+            .ToList();
+
+        // Historic attempts (cada sessão = uma tentativa)
+        var historicAttempts = allParsedResults
+            .OrderByDescending(p => p.session.CreatedAt)
+            .Select(p => new Desafio2HistoricAttempt
+            {
+                Date = p.session.CreatedAt,
+                AccuracyRate = p.session.TotalChallenges > 0 
+                    ? (double)p.session.CorrectAnswers / p.session.TotalChallenges 
+                    : 0,
+                Details = p.results.Select(r => new Desafio2AttemptDetail
+                {
+                    TargetEmotion = r.TargetEmotion,
+                    IsCorrect = r.IsCorrect,
+                    ResponseTimeMs = r.ResponseTime,
+                    TopPredictions = r.TopPredictions
+                        .Take(3)
+                        .Select(tp => new Desafio2Prediction
+                        {
+                            Emotion = tp.Emotion,
+                            Score = tp.Score
+                        })
+                        .ToList()
+                }).ToList()
+            })
+            .ToList();
+
+        return new Desafio2MetricsData
+        {
+            TotalSessions = sessionResults.Count,
+            AccuracyRate = accuracyRate,
+            AverageResponseTimeMs = allResults.Count > 0 ? (int)allResults.Average(r => r.ResponseTime) : 0,
+            EmotionBreakdown = emotionBreakdown,
+            ProgressTrend = progressTrend,
+            HistoricAttempts = historicAttempts
+        };
+    }
+
+    /// <summary>
+    /// Constrói breakdown por emoção a partir dos BatchAnalyzeResult (Desafio 2)
+    /// </summary>
+    private Dictionary<string, Desafio2EmotionBreakdown> BuildDesafio2EmotionBreakdownFromResults(List<BatchAnalyzeResult> results)
+    {
+        var breakdown = new Dictionary<string, Desafio2EmotionBreakdown>();
+
+        var grouped = results.GroupBy(r => r.TargetEmotion.Trim().ToLowerInvariant());
+        
+        foreach (var group in grouped)
+        {
+            var items = group.ToList();
+            var correct = items.Count(r => r.IsCorrect);
+            var avgTargetScore = items
+                .Select(r => r.AverageScores.GetValueOrDefault(group.Key, 0))
+                .Average();
+
+            breakdown[group.Key] = new Desafio2EmotionBreakdown
+            {
+                Attempts = items.Count,
+                CorrectAttempts = correct,
+                Accuracy = items.Count > 0 ? (double)correct / items.Count : 0,
+                AvgTargetScore = avgTargetScore,
+                AvgResponseTimeMs = (int)items.Average(r => r.ResponseTime)
+            };
         }
 
         return breakdown;

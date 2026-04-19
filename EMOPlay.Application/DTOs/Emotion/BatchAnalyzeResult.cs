@@ -26,6 +26,11 @@ public class BatchAnalyzeResult
     public bool IsCorrect { get; set; }
     
     /// <summary>
+    /// Tempo de resposta em milissegundos
+    /// </summary>
+    public int ResponseTime { get; set; }
+    
+    /// <summary>
     /// Timestamp da análise
     /// </summary>
     public DateTime AnalysisTimestamp { get; set; }

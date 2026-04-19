@@ -161,6 +161,7 @@ public class EmotionService : IEmotionService
             TopPredictions = topPredictions,
             AverageScores = averageScores,
             IsCorrect = isCorrect,
+            ResponseTime = attempt.ResponseTime,
             AnalysisTimestamp = processedAt
         };
     }
@@ -183,6 +184,7 @@ public class EmotionService : IEmotionService
             {
                 Id = Guid.NewGuid(),
                 SessionId = Guid.Parse(sessionId),
+                UserId = Guid.Parse(request.UserId),
                 CorrectAnswers = response.Correct,
                 TotalChallenges = response.Total,
                 Percentage = response.Accuracy * 100,
