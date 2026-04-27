@@ -1,0 +1,41 @@
+## .NET / C# ##
+
+# Build outputs
+bin/
+obj/
+
+# Compiled output
+*.dll
+*.exe
+*.pdb
+*.cache
+*.xml
+
+# NuGet
+*.nupkg
+*.nuspec
+packages/
+.nuget/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.cache
+
+# Rider
+.idea/
+
+# Logs
+logs/
+*.log
+
+# User-specific files
+*.rsuser
+
+# Test results
+TestResults/
+coverage/
+
+# Publish output
+publish/
