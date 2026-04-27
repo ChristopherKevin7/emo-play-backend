@@ -12,13 +12,15 @@ public class EmotionService : IEmotionService
 {
     private readonly IAIService _aiService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IScoreService _scoreService;
     private readonly ILogger<EmotionService> _logger;
     private const double ScoreThreshold = 0.4; // Score mínimo para considerar correto
 
-    public EmotionService(IAIService aiService, IUnitOfWork unitOfWork, ILogger<EmotionService> logger)
+    public EmotionService(IAIService aiService, IUnitOfWork unitOfWork, IScoreService scoreService, ILogger<EmotionService> logger)
     {
         _aiService = aiService;
         _unitOfWork = unitOfWork;
+        _scoreService = scoreService;
         _logger = logger;
     }
 
@@ -80,6 +82,9 @@ public class EmotionService : IEmotionService
             ProcessedAt = processedAt,
             Message = $"Batch analysis concluído: {correctCount}/{total} corretas ({accuracy:P2})"
         };
+
+        // Calculate Desafio 2 score (50 pts per correct, flat)
+        response.Score = _scoreService.CalculateDesafio2Score(correctCount);
 
         await SaveBatchResultAsync(request, response, sessionId);
 
@@ -188,6 +193,7 @@ public class EmotionService : IEmotionService
                 CorrectAnswers = response.Correct,
                 TotalChallenges = response.Total,
                 Percentage = response.Accuracy * 100,
+                Score = response.Score,
                 Message = response.Message,
                 ResultsJson = System.Text.Json.JsonSerializer.Serialize(response.Results),
                 CreatedAt = DateTime.UtcNow
@@ -196,7 +202,10 @@ public class EmotionService : IEmotionService
             await _unitOfWork.SessionResults.AddAsync(sessionResult);
             await _unitOfWork.SaveChangesAsync();
 
-            _logger.LogInformation("[EmotionService] Resultados salvos no MongoDB para sessão {SessionId}", sessionId);
+            // Increment user cumulative points
+            await _scoreService.AddUserPointsAsync(Guid.Parse(request.UserId), response.Score);
+
+            _logger.LogInformation("[EmotionService] Resultados salvos no MongoDB para sessão {SessionId} | Score: {Score} pts", sessionId, response.Score);
         }
         catch (Exception ex)
         {

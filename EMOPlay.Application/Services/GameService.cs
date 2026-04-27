@@ -10,10 +10,12 @@ namespace EMOPlay.Application.Services;
 public class GameService : IGameService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IScoreService _scoreService;
 
-    public GameService(IUnitOfWork unitOfWork)
+    public GameService(IUnitOfWork unitOfWork, IScoreService scoreService)
     {
         _unitOfWork = unitOfWork;
+        _scoreService = scoreService;
     }
 
     public async Task<SessionResultResponse> SaveGameResultAsync(SaveGameResultRequest request)
@@ -28,6 +30,9 @@ public class GameService : IGameService
             ? GameModeEnum.IdentifyEmotion 
             : GameModeEnum.MakeEmotion;
 
+        // Calculate score via ScoreService (Desafio 1: easy=10, medium=20, hard=30 pts/acerto)
+        var score = _scoreService.CalculateDesafio1Score(request.TotalScore, request.Level);
+
         // Create game session
         var gameSession = new GameSession
         {
@@ -35,7 +40,7 @@ public class GameService : IGameService
             ChildId = request.ChildId,
             GameMode = gameMode,
             Status = GameSessionStatusEnum.Completed,
-            TotalPoints = request.TotalScore * 10, // 10 pontos por acerto
+            TotalPoints = score,
             StartedAt = request.StartTime,
             EndedAt = request.EndTime,
             AccuracyRate = request.AccuracyRate,
@@ -85,6 +90,7 @@ public class GameService : IGameService
             CorrectAnswers = request.TotalScore,
             TotalChallenges = request.TotalChallenges,
             Percentage = request.AccuracyRate,
+            Score = score,
             Message = $"Game completed. Accuracy: {request.AccuracyRate:F2}%. Level: {request.Level}",
             ResultsJson = challengeResultsJson,
             CreatedAt = DateTime.UtcNow
@@ -93,14 +99,18 @@ public class GameService : IGameService
         await _unitOfWork.SessionResults.AddAsync(sessionResult);
         await _unitOfWork.SaveChangesAsync();
 
+        // Increment user points
+        await _scoreService.AddUserPointsAsync(request.ChildId, score);
+
         // Return response
         return new SessionResultResponse
         {
             SessionId = gameSession.Id,
             Acertos = request.TotalScore,
             Percentage = request.AccuracyRate,
+            Score = score,
             Mensagem = $"Jogo finalizado com sucesso! Acertos: {request.TotalScore}/{request.TotalChallenges}",
-            Resultados = new List<ResultadoItem>(), // Pode ser preenchido se necessário
+            Resultados = new List<ResultadoItem>(),
             Armazenado = true,
             Mensagem_Retorno = "Resultados armazenados com sucesso!"
         };
@@ -120,6 +130,7 @@ public class GameService : IGameService
             SessionId = sessionResult.SessionId,
             Acertos = sessionResult.CorrectAnswers,
             Percentage = sessionResult.Percentage,
+            Score = sessionResult.Score,
             Mensagem = sessionResult.Message,
             Resultados = resultados,
             Armazenado = true,

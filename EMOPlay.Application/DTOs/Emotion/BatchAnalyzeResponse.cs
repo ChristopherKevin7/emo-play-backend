@@ -21,6 +21,11 @@ public class BatchAnalyzeResponse
     public int Correct { get; set; }
     
     /// <summary>
+    /// Pontuação calculada para esta sessão (acertos × 50 pts)
+    /// </summary>
+    public int Score { get; set; }
+    
+    /// <summary>
     /// Taxa de acerto (0-1)
     /// </summary>
     public double Accuracy { get; set; }
