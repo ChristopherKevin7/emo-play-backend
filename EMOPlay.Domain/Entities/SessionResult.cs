@@ -8,8 +8,9 @@ public class SessionResult
     public int CorrectAnswers { get; set; }
     public int TotalChallenges { get; set; }
     public double Percentage { get; set; }
+    public int Score { get; set; }
     public string Message { get; set; }
-    public string ResultsJson { get; set; } // Armazena os resultados individuais em JSON
+    public string ResultsJson { get; set; }
     public DateTime CreatedAt { get; set; }
 
     // Navigation properties

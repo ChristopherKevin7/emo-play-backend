@@ -9,6 +9,7 @@ public class User
     public required string Email { get; set; }
     public required string PasswordHash { get; set; }
     public RoleEnum Role { get; set; }
+    public int Points { get; set; } = 0;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; }
