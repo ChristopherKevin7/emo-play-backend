@@ -10,11 +10,13 @@ namespace EMOPlay.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IScoreService _scoreService;
     private readonly ILogger<UsersController> _logger;
 
-    public UsersController(IUserService userService, ILogger<UsersController> logger)
+    public UsersController(IUserService userService, IScoreService scoreService, ILogger<UsersController> logger)
     {
         _userService = userService;
+        _scoreService = scoreService;
         _logger = logger;
     }
 
@@ -396,6 +398,36 @@ public class UsersController : ControllerBase
         {
             _logger.LogError(ex, "Unexpected error checking if user exists");
             return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    /// <summary>
+    /// Retorna a pontuação acumulada do usuário
+    /// </summary>
+    /// <param name="userId">ID do usuário</param>
+    /// <returns>userId e pontuação total</returns>
+    /// <response code="200">Pontuação retornada com sucesso</response>
+    /// <response code="404">Usuário não encontrado</response>
+    [HttpGet("{userId}/points")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserPoints([FromRoute] Guid userId)
+    {
+        try
+        {
+            var points = await _scoreService.GetUserPointsAsync(userId);
+            return Ok(new { userId, points });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            _logger.LogWarning("User not found when fetching points: {Message}", ex.Message);
+            return NotFound(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error fetching user points for {UserId}", userId);
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Erro ao buscar pontuação" });
         }
     }
 }

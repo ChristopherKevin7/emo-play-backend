@@ -32,6 +32,7 @@ builder.Services.AddScoped<IUnitOfWork, MongoDbUnitOfWork>();
 // Add application services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IScoreService, ScoreService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IChallengeService, ChallengeService>();
 builder.Services.AddScoped<IMetricsService, MetricsService>();
